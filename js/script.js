@@ -1,7 +1,7 @@
 const apiURL = "https://randomuser.me/api/?nat=us&results=12";
 const gallery = document.getElementById('gallery');
 const search = document.querySelector('.search-container');
-let newData= [];
+
 
 function getJSON(url, callback) {
     const xhr = new XMLHttpRequest();
@@ -39,7 +39,7 @@ form.appendChild(inputSubmit);
 
 
 function generateHTML(data) {
-    //console.log(data.results[0].name.first + ' ' + data.results[0].name.last);
+    
     for(let i=0; i<data.results.length; i++){
         //Creation and naming of attributes of elements 
         let cardDiv = document.createElement('div');
@@ -68,6 +68,7 @@ function generateHTML(data) {
         let city= randomUser.location.city;
         let state= randomUser.location.state;
         location.textContent= city + ', ' + state; 
+       console.log(randomUser.dob.date);
         
         //Appending Elements To Card
         gallery.appendChild(cardDiv);
@@ -93,7 +94,6 @@ function generateHTML(data) {
                 cardDiv.style.boxShadow= '5px 10px 15px rgba(33, 34, 34, 0.1)';
                 imgCont.style.opacity='1';
                 infoCont.style.opacity='1'; 
-                newData.push(randomUser); 
             } else {
                 cardDiv.style.background= 'rgba(245, 245, 245, 0.2)';
                 cardDiv.style.pointerEvents='none';
@@ -115,13 +115,11 @@ function generateHTML(data) {
             cardDiv.style.pointerEvents='auto';
             cardDiv.style.border='1px solid rgba(50, 50, 50, 0.3)';
             cardDiv.style.boxShadow= 'none';
-            newData=[];
-            console.log(newData);
         });
-       
+        
         function generateModal(data){
-            data= newData;
-            console.log(data)
+            
+            let date = new Date(randomUser.dob.date);
             let modalCont= document.createElement('div');
             modalCont.setAttribute('class', 'modal-container');
             let modal= document.createElement('div');
@@ -158,8 +156,9 @@ function generateHTML(data) {
             modalAddress.textContent= randomUser.location.street.number + ' ' + randomUser.location.street.name  +  ', ' + randomUser.location.city + ', ' + randomUser.location.state + ' ' + randomUser.location.postcode;
             let modalBirthDate= document.createElement('p');
             modalBirthDate.setAttribute('class', 'modal-text');
-            modalBirthDate.textContent= `Birthday: ${randomUser.dob.date}`;
-
+            modalBirthDate.textContent= 'Birthday: '+ (date.getMonth()+1)+'/'+(date.getDate())+'/'+date.getFullYear();
+            
+    
             let modalBtnCont= document.createElement('div');
             modalBtnCont.setAttribute('class', 'modal-btn-container');
             let prevBtn= document.createElement('button');
@@ -202,7 +201,7 @@ function generateHTML(data) {
                 modalCity.textContent= randomUser.location.city;
                 modalNumber.textContent= randomUser.cell;
                 modalAddress.textContent= randomUser.location.street.number + ' ' + randomUser.location.street.name  +  ', ' + randomUser.location.city + ', ' + randomUser.location.state + ' ' + randomUser.location.postcode;
-                modalBirthDate.textContent= `Birthday: ${randomUser.dob.date}`;
+                modalBirthDate.textContent= 'Birthday: '+ (date.getMonth()+1)+'/'+(date.getDate())+'/'+date.getFullYear();
 
                 modalInfoCont.appendChild(modalImg);
                 modalInfoCont.appendChild(modalCaption);
@@ -226,6 +225,7 @@ function generateHTML(data) {
                     } else {
                         randomUser = data.results[i += increment];
                     }
+                    let date = new Date(randomUser.dob.date);
                     
                     userImg= randomUser.picture.large;
                     firstName= randomUser.name.first;
@@ -237,7 +237,7 @@ function generateHTML(data) {
                     modalCity.textContent= randomUser.location.city;
                     modalNumber.textContent= randomUser.cell;
                     modalAddress.textContent= randomUser.location.street.number + ' ' + randomUser.location.street.name  +  ', ' + randomUser.location.city + ', ' + randomUser.location.state + ' ' + randomUser.location.postcode;
-                    modalBirthDate.textContent= `Birthday: ${randomUser.dob.date}`;
+                    modalBirthDate.textContent= 'Birthday: '+ (date.getMonth()+1)+'/'+(date.getDate())+'/'+date.getFullYear();
 
                     document.body.appendChild(modalCont);
                     modalCont.appendChild(modal);
